@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 # Step 1: Download NVDA Stock Data (Past 4 Years)
 ticker = 'NVDA'  # NVIDIA's stock ticker symbol
-data = yf.download(ticker, start='2020-01-01', end='2024-12-30')
+data = yf.download(ticker, start='2024-01-01', end='2024-12-30')
 
 # Step 2: Feature Engineering
 # Calculate Daily Returns
@@ -25,6 +25,14 @@ data['RSI'] = ta.momentum.RSIIndicator(data['Close'].squeeze(), window=14).rsi()
 data['SMA_20'] = data['Close'].rolling(window=20).mean()
 data['EMA_20'] = data['Close'].ewm(span=20, adjust=False).mean()
 
+# *** NEW: Momentum Indicator ***
+data['Momentum'] = ta.momentum.ROCIndicator(data['Close'].squeeze(), window=10).roc()
+
+# *** NEW: Add MACD and Signal Line ***
+macd = ta.trend.MACD(data['Close'].squeeze())  # Ensure Close is 1D
+data['MACD'] = macd.macd()
+data['MACD_Signal'] = macd.macd_signal()
+
 # Drop rows with NaN values resulting from calculations
 data.dropna(inplace=True)
 
@@ -36,8 +44,16 @@ scaler = StandardScaler()
 X = scaler.fit_transform(features)
 
 # Step 4: Implement Gaussian HMM
-# Initialize HMM with 4 Hidden States
-model = GaussianHMM(n_components=4, covariance_type='full', n_iter=1000, random_state=42)
+# *** NEW: Increased Hidden States for More Granularity ***
+model = GaussianHMM(n_components=6, covariance_type='full', n_iter=1000, random_state=42)
+
+# *** NEW: Force Better Initialization for State Transitions ***
+model.transmat_ = np.array([
+    [0.85, 0.10, 0.03, 0.02],  # Bullish
+    [0.10, 0.85, 0.03, 0.02],  # Bearish
+    [0.05, 0.05, 0.85, 0.05],  # Sideways
+    [0.02, 0.02, 0.05, 0.91]   # Volatility Change
+])
 
 # Fit the Model
 model.fit(X)
@@ -51,12 +67,14 @@ data['Hidden_State'] = hidden_states
 # Analyze Feature Means for Each State
 state_means = data.groupby('Hidden_State').mean()
 
-# Label Hidden States
+# *** NEW: Label Hidden States ***
 state_labels = {
     0: 'Bullish',
     1: 'Bearish',
     2: 'Sideways Market',
-    3: 'Volatility Change'
+    3: 'Volatility Change',
+    4: 'Consolidation',  # *** NEW State Label ***
+    5: 'Breakout'        # *** NEW State Label ***
 }
 
 # Map Hidden States to Labels
@@ -70,19 +88,18 @@ print(f'Log Likelihood: {log_likelihood}')
 plt.figure(figsize=(14, 7))
 plt.plot(data.index, data['Close'], label='Close Price')
 
-# Highlight Different Market States
-for state, label in state_labels.items():
-    plt.scatter(
-        data.index[data['Hidden_State'] == state],
-        data['Close'][data['Hidden_State'] == state],
-        label=label,
-        marker='o',
-        alpha=0.6
-    )
+# *** NEW: Step 8 - Plot Hidden State Probabilities ***
+posterior_probs = model.predict_proba(X)
 
-plt.title(f'{ticker} Stock Price with Hidden Market States')
+plt.figure(figsize=(14, 7))
+for i, label in state_labels.items():
+    smoothed_probs = pd.DataFrame(posterior_probs).rolling(window=7).mean()  # Smooth probabilities
+for i, label in state_labels.items():
+    plt.plot(data.index, smoothed_probs[i], label=label)
+
+plt.title('Hidden State Probabilities Over Time')
 plt.xlabel('Date')
-plt.ylabel('Close Price')
+plt.ylabel('Probability')
 plt.legend()
 plt.grid(True)
 plt.show()
