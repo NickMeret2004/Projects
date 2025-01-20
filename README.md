@@ -1,4 +1,11 @@
-1. Project Overview
+Hidden Markov Model 
+
+	Hello and welcome to my latest project! I started this project with the goal of deepening my understanding of Python and its libraries, while also exploring stock market movements, predicting hidden states in stock prices, downloading market data, and applying feature engineering techniques.
+	
+	First, I would like to give credit to where it is due, which is to a youtube video I stumbled upon by MoonDev https://www.youtube.com/watch?v=JwGfdnnyUAs . This is just a fantastic video showing uncut footage of someone just like me slowly learning how to use new AI tools to predict as much as possible about stock market movements. I would also like to share a video that originally helped me understand the idea of Hidden Markov Models and how they work “under the hood” https://www.youtube.com/watch?v=RWkHJnFj5rY . This video, by the channel Normalized Nerd, was crucial in my understanding of the Hidden Markov Model and its process. Without these people and their channels, I'm not sure if I ever would have stumbled upon this great topic, and for them I am truly grateful.
+
+	I would like to let it be known that the goal of this project wasn’t to create a perfect model, but to create a framework for which I can constantly improve as my coding knowledge and experience grows with time. Now let's get into the details of my project:
+
 
 This project implements a Gaussian Hidden Markov Model (HMM) to analyze and predict hidden states in NVIDIA’s (NVDA) stock price movements over the past year.
 
