@@ -7,8 +7,7 @@ engineering techniques.
 I would like to give credit to where it is due, which is to a youtube video I stumbled upon by MoonDev 
 https://www.youtube.com/watch?v=JwGfdnnyUAs . This is just a fantastic video showing uncut footage of someone just like me slowly 
 learning how to use new AI tools to predict as much as possible about stock market movements. I would also like to share a video that 
-originally helped me understand the idea of Hidden Markov Models and how they work “under the hood” https://www.youtube.com/watch?
-v=RWkHJnFj5rY . This video, by the channel Normalized Nerd, was crucial in my understanding of the Hidden Markov Model and its process. 
+originally helped me understand the idea of Hidden Markov Models and how they work “under the hood” https://www.youtube.com/watch?v=RWkHJnFj5rY . This video, by the channel Normalized Nerd, was crucial in my understanding of the Hidden Markov Model and its process. 
 Without these people and their channels, I'm not sure if I ever would have stumbled upon this great topic, and for them I am truly 
 grateful.
 
