@@ -160,6 +160,13 @@ plt.ylabel(‘Probability’)
 plt.legend()
 plt.grid(True)
 plt.show()
+
+
+Output
+
+The output consists of two graphs, one showing the time period and stock price over that time period, and the other displays the hidden state probabilities over time, based on the predictions of our Guassian Hidden Markov Model. With both of these we can see over time what our code believes to be hidden states of, in this case, the SP 500 (seen in the screenshots below). As we can see, over the past month the model has picked up a bearish setiment in the market as the year of 2024 ends and a new president elect coming into office. More recently, bearish setiment seems to be dropping and more of a consolidation phase seems to be setting in.
       
-    
+![Screenshot 2025-01-20 at 5 11 23 PM](https://github.com/user-attachments/assets/6c43d134-418f-4a6a-b8bd-f532bade09c9)
+![Screenshot 2025-01-20 at 5 11 36 PM](https://github.com/user-attachments/assets/de55e4e5-c128-49f3-a386-c39c59b775a2)
+
     
